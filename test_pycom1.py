@@ -3,23 +3,23 @@ from simplecalc import simplecalc
 import unittest
 
 class TestPycom(unittest.TestCase):
-
-    def test_add(self):
-        ast = simplecalc("2 + 3")
-        self.assertEqual(ast.value, 5)
-
-    def test_mul(self):
-        ast = simplecalc("2*3")
-        self.assertEqual(ast.value, 6)
-
-    def test_string(self):
-        self.assertRaises(SystemExit, simplecalc, "a")
+    
+    def calc(self, expr):
+        ast = simplecalc(expr)
+        return ast.value
 
     def test_num(self):
-        ast = simplecalc("1")
-        self.assertEqual(ast.value, 1)
-        ast = simplecalc("12")
-        self.assertEqual(ast.value, 12)
+        self.assertEqual(self.calc("1"), 1)
+        self.assertEqual(self.calc("12"), 12)
+
+    def test_add(self):
+        self.assertEqual(self.calc("2 + 3"), 5)
+
+    def test_mul(self):
+        self.assertEqual(self.calc("2 * 3"), 6)
+
+    def test_string(self):
+        self.assertRaises(SystemExit, self.calc, "a")
 
     def test_float(self):
         self.assertRaises(SystemExit, simplecalc, "1.5")
