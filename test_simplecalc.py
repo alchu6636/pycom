@@ -18,8 +18,17 @@ class TestPycom(unittest.TestCase):
     def test_mul(self):
         self.assertEqual(self.calc("2 * 3"), 6)
 
+    def test_space(self):
+        self.assertEqual(self.calc("1+2"), 3)
+        self.assertEqual(self.calc("1 + 2"), 3)
+        self.assertEqual(self.calc("  1  +  2  "), 3)
+        
+    def test_null(self):
+        self.assertRaises(SystemExit, self.calc, "")
+        self.assertRaises(SystemExit, self.calc, " ")
+
     def test_string(self):
-        self.assertRaises(SystemExit, self.calc, "a")
+         self.assertRaises(SystemExit, self.calc, "a")
 
     def test_float(self):
         self.assertRaises(SystemExit, simplecalc, "1.5")
