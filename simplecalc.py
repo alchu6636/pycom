@@ -63,11 +63,6 @@ class FloatScanner(SimpleScanner):
         t = Token(type='float', attr=s)
         self.rv.append(t)
 
-def scan(f):
-    input = f.read()
-    scanner = FloatScanner()
-    return scanner.tokenize(input)
-
 #
 #	PARSING
 #
@@ -147,7 +142,6 @@ class Interpret(ASTTraversal):
     def __init__(self, ast):
         ASTTraversal.__init__(self, ast)
         self.postorder()
-        print ast.value
         
     def n_number(self, node):
         node.value = int(node.attr)
@@ -167,6 +161,8 @@ def generate(ast):
 	Interpret(ast)
 	return ast
 
+def simplecalc(expr):
+    return  generate(semantic(parse(scan_expr(expr))))
 #
 #	MAIN
 #
@@ -174,12 +170,7 @@ def scan_expr(input):
     scanner = FloatScanner()
     return scanner.tokenize(input)
 
-
 if __name__ == '__main__':
-	import sys
-	filename = sys.argv[1]
-	f = open(filename)
         expr = "2 + 3 * 5"
-	generate(semantic(parse(scan_expr(expr))))
-	f.close()
-
+	ast = simplecalc(expr)
+        print ast.value
