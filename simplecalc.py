@@ -54,15 +54,6 @@ class SimpleScanner(GenericScanner):
         t = Token(type='number', attr=s)
         self.rv.append(t)
 
-class FloatScanner(SimpleScanner):
-    def __init__(self):
-        SimpleScanner.__init__(self)
-        
-    def t_float(self, s):
-        r' \d+ \. \d+ '
-        t = Token(type='float', attr=s)
-        self.rv.append(t)
-
 #
 #	PARSING
 #
@@ -167,7 +158,7 @@ def simplecalc(expr):
 #	MAIN
 #
 def scan_expr(input):
-    scanner = FloatScanner()
+    scanner = SimpleScanner()
     return scanner.tokenize(input)
 
 if __name__ == '__main__':
