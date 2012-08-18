@@ -54,6 +54,10 @@ class SimpleScanner(GenericScanner):
         t = Token(type='number', attr=s)
         self.rv.append(t)
 
+    def t_string(self, s):
+        r' "[^"]*" '
+        t = Token(type='string', attr=s)
+        self.rv.append(t)
 #
 #	PARSING
 #

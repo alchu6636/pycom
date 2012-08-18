@@ -12,6 +12,15 @@ class TestScanner(unittest.TestCase):
         self.assertEqual(tokens[0].attr, '2')
         self.assertEqual(tokens[1].attr, '333')
     
+    def test_string(self):
+        tokens = self.scan(' "a" "b c" "5" " " ""')
+        self.assertEqual(len(tokens), 5)
+        self.assertEqual(tokens[0].attr, '"a"')
+        self.assertEqual(tokens[1].attr, '"b c"')
+        self.assertEqual(tokens[2].attr, '"5"')
+        self.assertEqual(tokens[3].attr, '" "')
+        self.assertEqual(tokens[4].attr, '""')
+        
 class TestPycom(unittest.TestCase):
     
     def calc(self, expr):
