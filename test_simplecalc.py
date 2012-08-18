@@ -21,57 +21,52 @@ class TestScanner(unittest.TestCase):
         self.assertEqual(tokens[3].attr, '" "')
         self.assertEqual(tokens[4].attr, '""')
         
+def calc(expr):
+    ast = simplecalc.simplecalc(expr)
+    return ast.value
+        
 class TestPycom(unittest.TestCase):
     
-    def calc(self, expr):
-        ast = simplecalc.simplecalc(expr)
-        return ast.value
-
     def test_num(self):
-        self.assertEqual(self.calc('1'), 1)
-        self.assertEqual(self.calc('12'), 12)
+        self.assertEqual(calc('1'), 1)
+        self.assertEqual(calc('12'), 12)
 
     def test_add(self):
-        self.assertEqual(self.calc('2 + 3'), 5)
+        self.assertEqual(calc('2 + 3'), 5)
 
     def test_mul(self):
-        self.assertEqual(self.calc('2 * 3'), 6)
+        self.assertEqual(calc('2 * 3'), 6)
 
     def test_space(self):
-        self.assertEqual(self.calc('1+2'), 3)
-        self.assertEqual(self.calc('1 + 2'), 3)
-        self.assertEqual(self.calc('  1  +  2  '), 3)
+        self.assertEqual(calc('1+2'), 3)
+        self.assertEqual(calc('1 + 2'), 3)
+        self.assertEqual(calc('  1  +  2  '), 3)
         
     def test_null(self):
-        self.assertRaises(SystemExit, self.calc, '')
-        self.assertRaises(SystemExit, self.calc, ' ')
+        self.assertRaises(SystemExit, calc, '')
+        self.assertRaises(SystemExit, calc, ' ')
 
     def test_string(self):
-        self.assertRaises(SystemExit, self.calc, 'a')
+        self.assertRaises(SystemExit, calc, 'a')
 
     def test_float(self):
-        self.assertRaises(SystemExit, self.calc, '1.5')
+        self.assertRaises(SystemExit, calc, '1.5')
 
 class TestCalcString(unittest.TestCase):
-    def calc(self, expr):
-        ast = simplecalc.simplecalc(expr)
-        return ast.value
-
     def test_factor(self):
-        self.assertEqual(self.calc('"abc"'), 'abc')
+        self.assertEqual(calc('"abc"'), 'abc')
 
     def test_add(self):
-        self.assertEqual(self.calc('"a" + "bc"'), 'abc')
-        self.assertEqual(self.calc('"a" + "bc" + "def"'), 'abcdef')
+        self.assertEqual(calc('"a" + "bc"'), 'abc')
+        self.assertEqual(calc('"a" + "bc" + "def"'), 'abcdef')
 
     def test_mul1(self):
-        self.assertEqual(self.calc('"a" * 3'), 'aaa')
-        self.assertEqual(self.calc('3 * "a"'), 'aaa')
-        self.assertEqual(self.calc('2 * "a" * 3'), 'aaaaaa')
+        self.assertEqual(calc('"a" * 3'), 'aaa')
+        self.assertEqual(calc('3 * "a"'), 'aaa')
+        self.assertEqual(calc('2 * "a" * 3'), 'aaaaaa')
         
     def test_mul_error(self):
-        self.assertRaises(TypeError, self.calc, '"a" * "b"')
-        
+        self.assertRaises(TypeError, calc, '"a" * "b"')
         
 if __name__ == '__main__':
     unittest.main()
