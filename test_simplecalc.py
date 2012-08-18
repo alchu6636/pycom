@@ -47,7 +47,7 @@ class TestPycom(unittest.TestCase):
         self.assertRaises(SystemExit, self.calc, ' ')
 
     def test_string(self):
-         self.assertRaises(SystemExit, self.calc, 'a')
+        self.assertRaises(SystemExit, self.calc, 'a')
 
     def test_float(self):
         self.assertRaises(SystemExit, self.calc, '1.5')
@@ -62,9 +62,16 @@ class TestCalcString(unittest.TestCase):
 
     def test_add(self):
         self.assertEqual(self.calc('"a" + "bc"'), 'abc')
+        self.assertEqual(self.calc('"a" + "bc" + "def"'), 'abcdef')
 
     def test_mul1(self):
         self.assertEqual(self.calc('"a" * 3'), 'aaa')
+        self.assertEqual(self.calc('3 * "a"'), 'aaa')
+        self.assertEqual(self.calc('2 * "a" * 3'), 'aaaaaa')
+        
+    def test_mul_error(self):
+        self.assertRaises(TypeError, self.calc, '"a" * "b"')
+        
         
 if __name__ == '__main__':
     unittest.main()
