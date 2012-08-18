@@ -52,6 +52,20 @@ class TestPycom(unittest.TestCase):
     def test_float(self):
         self.assertRaises(SystemExit, self.calc, '1.5')
 
+class TestCalcString(unittest.TestCase):
+    def calc(self, expr):
+        ast = simplecalc.simplecalc(expr)
+        return ast.value
+
+    def test_factor(self):
+        self.assertEqual(self.calc('"abc"'), 'abc')
+
+    def test_add(self):
+        self.assertEqual(self.calc('"a" + "bc"'), 'abc')
+
+    def test_mul1(self):
+        self.assertEqual(self.calc('"a" * 3'), 'aaa')
+        
 if __name__ == '__main__':
     unittest.main()
 

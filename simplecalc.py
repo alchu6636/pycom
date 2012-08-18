@@ -90,6 +90,10 @@ class ExprParser(GenericParser):
         ' factor ::= number '
         return AST(type=args[0])
 
+    def p_factor_2(self, args):
+        ' factor ::= string '
+        return AST(type=args[0])
+
 def parse(tokens):
     parser = ExprParser()
     return parser.parse(tokens)
@@ -105,6 +109,9 @@ class TypeCheck(ASTTraversal):
         
     def n_number(self, node):
         node.exprType = 'number'
+        
+    def n_string(self, node):
+        node.exprType = 'string'
         
     def default(self, node):
         # this handles + and * nodes
@@ -134,6 +141,9 @@ class Interpret(ASTTraversal):
         
     def n_number(self, node):
         node.value = int(node.attr)
+        
+    def n_string(self, node):
+        node.value = node.attr[1:-1]
         
     def default(self, node):
         left = node.left.value
