@@ -2,6 +2,16 @@
 import simplecalc
 import unittest
 
+class TestScanner(unittest.TestCase):
+    def scan(self, str):
+        return simplecalc.SimpleScanner().tokenize(str)
+        
+    def test_num(self):
+        tokens = self.scan('2 333')
+        self.assertEqual(len(tokens), 2)
+        self.assertEqual(tokens[0].attr, '2')
+        self.assertEqual(tokens[1].attr, '333')
+    
 class TestPycom(unittest.TestCase):
     
     def calc(self, expr):
