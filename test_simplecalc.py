@@ -1,11 +1,11 @@
 
-from simplecalc import simplecalc
+import simplecalc
 import unittest
 
 class TestPycom(unittest.TestCase):
     
     def calc(self, expr):
-        ast = simplecalc(expr)
+        ast = simplecalc.simplecalc(expr)
         return ast.value
 
     def test_num(self):
