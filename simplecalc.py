@@ -119,14 +119,14 @@ class TypeCheck(ASTTraversal):
         rightType = node.right.exprType
         if node.type == '*':
             if leftType == 'string' and rightType == 'string':
-                raise 'Type error'
+                raise TypeError
             if leftType == 'string' or rightType == 'string':
                 node.exprType = 'string'
             else:
                 node.exprType = 'number'
         else:
             if leftType != rightType:
-                raise 'Type error.'
+                raise TypeError
             node.exprType = leftType
 
 def semantic(ast):
