@@ -3,8 +3,8 @@ import simplecalc
 import unittest
 
 class TestScanner(unittest.TestCase):
-    def scan(self, str):
-        return simplecalc.SimpleScanner().tokenize(str)
+    def scan(self, string):
+        return simplecalc.SimpleScanner().tokenize(string)
         
     def test_num(self):
         tokens = self.scan('2 333')
