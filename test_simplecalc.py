@@ -31,7 +31,7 @@ class TestPycom(unittest.TestCase):
          self.assertRaises(SystemExit, self.calc, "a")
 
     def test_float(self):
-        self.assertRaises(SystemExit, simplecalc, "1.5")
+        self.assertRaises(SystemExit, self.calc, "1.5")
 
 if __name__ == '__main__':
     unittest.main()
