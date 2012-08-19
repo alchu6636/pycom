@@ -29,6 +29,7 @@ class Parser:
     def __init__(self, **kw):
         self.debug = kw.get('debug', 0)
         self.names = { }
+        self.result = []
         try:
             modname = os.path.split(os.path.splitext(__file__)[0])[1] + "_" + self.__class__.__name__
         except:
@@ -53,6 +54,9 @@ class Parser:
             if not s: continue
             yacc.parse(s)
 
+    def run_string(self, s):
+        yacc.parse(s)
+        
     
 class Calc(Parser):
 
@@ -109,7 +113,7 @@ class Calc(Parser):
 
     def p_statement_expr(self, p):
         'statement : expression'
-        print(p[1])
+        self.result.append(p[1])
 
     def p_expression_binop(self, p):
         """
