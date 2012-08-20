@@ -21,6 +21,13 @@ class TestCalc(unittest.TestCase):
     def test_float(self):
         self.assertRaises(IndexError, calc, '3.2')
         
+    def test_string_add(self):
+        self.assertEqual(calc('"abc" + "cde"'), 'abccde')
+        
+    def test_string_mul(self):
+        self.assertEqual(calc('"abc" * 2'), 'abcabc')
+        self.assertEqual(calc(' 3 * "abc"'), 'abcabcabc')
+        
     def test_binop(self):
         data = [('1+2', 3),
                 ('2*3', 6),

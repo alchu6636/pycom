@@ -61,7 +61,7 @@ class Parser:
 class Calc(Parser):
 
     tokens = (
-        'NAME','NUMBER',
+        'NAME','NUMBER','STRING',
         'PLUS','MINUS','EXP', 'TIMES','DIVIDE','EQUALS',
         'LPAREN','RPAREN',
         )
@@ -88,6 +88,11 @@ class Calc(Parser):
         #print "parsed number %s" % repr(t.value)
         return t
 
+    def t_STRING(self, t):
+        r'"[^"]*"'
+        t.value = t.value[1:-1]
+        return t
+    
     t_ignore = " \t"
 
     def t_newline(self, t):
@@ -142,6 +147,10 @@ class Calc(Parser):
         'expression : NUMBER'
         p[0] = p[1]
 
+    def p_expression_string(self, p):
+        'expression : STRING'
+        p[0] = p[1]
+        
     def p_expression_name(self, p):
         'expression : NAME'
         try:
