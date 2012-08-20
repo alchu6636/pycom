@@ -25,6 +25,7 @@ class Parser:
     """
     tokens = ()
     precedence = ()
+    reserved = {}
 
     def __init__(self, **kw):
         self.debug = kw.get('debug', 0)
@@ -60,25 +61,29 @@ class Parser:
     
 class Calc(Parser):
 
-    tokens = (
-        'NAME','NUMBER',
-        'PLUS','MINUS','EXP', 'TIMES','DIVIDE','EQUALS',
-        'LPAREN','RPAREN',
-        )
+    reserved = {
+#        'add' : 'ADD',
+#        'mul' : 'MUL'
+        }
+
+    tokens = [
+        'NAME','INT','FLOAT','STRING',
+        'LPAREN','RPAREN'
+        #,'DOT'
+        ] + list(reserved.values())
 
     # Tokens
 
-    t_PLUS    = r'\+'
-    t_MINUS   = r'-'
-    t_EXP     = r'\*\*'
-    t_TIMES   = r'\*'
-    t_DIVIDE  = r'/'
-    t_EQUALS  = r'='
     t_LPAREN  = r'\('
     t_RPAREN  = r'\)'
-    t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
+#    t_DOT     = r'\.'
 
-    def t_NUMBER(self, t):
+    def t_FLOAT(self, t):
+        r'\d+\.\d*|\.\d+'
+        t.value = float(t.value)
+        return t
+
+    def t_INT(self, t):
         r'\d+'
         try:
             t.value = int(t.value)
@@ -86,6 +91,16 @@ class Calc(Parser):
             print("Integer value too large %s" % t.value)
             t.value = 0
         #print "parsed number %s" % repr(t.value)
+        return t
+
+    def t_STRING(self, t):
+        r'"[^"]*"'
+        t.value = t.value[1:-1]
+        return t
+
+    def t_NAME(self, t):
+        r'[a-zA-Z_][a-zA-Z_0-9]*'
+        t.type = reserved.get(t.value,'NAME')
         return t
 
     t_ignore = " \t"
@@ -100,46 +115,22 @@ class Calc(Parser):
 
     # Parsing rules
 
-    precedence = (
-        ('left','PLUS','MINUS'),
-        ('left','TIMES','DIVIDE'),
-        ('left', 'EXP'),
-        ('right','UMINUS'),
-        )
-
-    def p_statement_assign(self, p):
-        'statement : NAME EQUALS expression'
-        self.names[p[1]] = p[3]
+    precedence = ()
 
     def p_statement_expr(self, p):
         'statement : expression'
         self.result.append(p[1])
 
-    def p_expression_binop(self, p):
-        """
-        expression : expression PLUS expression
-                  | expression MINUS expression
-                  | expression TIMES expression
-                  | expression DIVIDE expression
-                  | expression EXP expression
-        """
-        #print [repr(p[i]) for i in range(0,4)]
-        if p[2] == '+'  : p[0] = p[1] + p[3]
-        elif p[2] == '-': p[0] = p[1] - p[3]
-        elif p[2] == '*': p[0] = p[1] * p[3]
-        elif p[2] == '/': p[0] = p[1] / p[3]
-        elif p[2] == '**': p[0] = p[1] ** p[3]
-
-    def p_expression_uminus(self, p):
-        'expression : MINUS expression %prec UMINUS'
-        p[0] = -p[2]
-
     def p_expression_group(self, p):
         'expression : LPAREN expression RPAREN'
         p[0] = p[2]
 
-    def p_expression_number(self, p):
-        'expression : NUMBER'
+    def p_expression_literal(self, p):
+        """
+        expression : INT
+                   | FLOAT
+                   | STRING
+        """
         p[0] = p[1]
 
     def p_expression_name(self, p):
