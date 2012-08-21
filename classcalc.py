@@ -142,7 +142,8 @@ class Calc(Parser):
 
     def p_expression_method(self, p):
         'expression : expression DOT func LPAREN expression RPAREN'
-        p[0] = p[1] #stub
+        if p[3] == 'add'  : p[0] = p[1] + p[5]
+        elif p[3] == 'mul': p[0] = p[1] * p[5]
 
     def p_expression_name(self, p):
         'expression : NAME'
