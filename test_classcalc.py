@@ -24,9 +24,12 @@ class TestCalc(unittest.TestCase):
 
     def test_string(self):
         self.assertEqual(calc('"abc"'), 'abc')
-    """
+
     def test_int_add_int(self):
-        self.assertEqual(calc('3.add(2)'), 5)
-    """
+        self.assertEqual(calc('3 .add(0)'), 3)
+
+    def test_int_mul_int(self):
+        self.assertEqual(calc('4 .mul(1)'), 4)
+
 if __name__ == '__main__':
     unittest.main()

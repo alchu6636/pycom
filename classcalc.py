@@ -62,21 +62,21 @@ class Parser:
 class Calc(Parser):
 
     reserved = {
-#        'add' : 'ADD',
-#        'mul' : 'MUL'
+        'add' : 'ADD',
+        'mul' : 'MUL'
         }
 
     tokens = [
         'NAME','INT','FLOAT','STRING',
-        'LPAREN','RPAREN'
-        #,'DOT'
+        'LPAREN','RPAREN',
+        'DOT'
         ] + list(reserved.values())
 
     # Tokens
 
     t_LPAREN  = r'\('
     t_RPAREN  = r'\)'
-#    t_DOT     = r'\.'
+    t_DOT     = r'\.'
 
     def t_FLOAT(self, t):
         r'\d+\.\d*|\.\d+'
@@ -100,7 +100,7 @@ class Calc(Parser):
 
     def t_NAME(self, t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
-        t.type = reserved.get(t.value,'NAME')
+        t.type = self.reserved.get(t.value,'NAME')
         return t
 
     t_ignore = " \t"
@@ -132,6 +132,17 @@ class Calc(Parser):
                    | STRING
         """
         p[0] = p[1]
+
+    def p_func(self, p):
+        """
+        func : ADD
+             | MUL
+        """
+        p[0] = p[1]
+
+    def p_expression_method(self, p):
+        'expression : expression DOT func LPAREN expression RPAREN'
+        p[0] = p[1] #stub
 
     def p_expression_name(self, p):
         'expression : NAME'
