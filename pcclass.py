@@ -21,8 +21,8 @@ class PcInt:
     def _add_float(self, float_o):
         return PcFloat(_float_add(self.value, float_o.value))
 
-    def __cmp__(self, other):
-        return self.value <> other.value
+    def __eq__(self, other):
+        return self.value == other.value
 
     def __str__(self):
         return self.value
@@ -31,8 +31,8 @@ class PcFloat:
     def __init__(self, v):
         self.value = float(v)
 
-    def __cmp__(self, other):
-        return self.value <> other.value
+    def __eq__(self, other):
+        return self.value == other.value
 
     def __str__(self):
         return self.value
