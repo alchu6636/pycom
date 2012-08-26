@@ -11,6 +11,9 @@ class TestPcInt(unittest.TestCase):
     def test_init(self):
         PcInt(3)
 
+    def test_str(self):
+        self.assertEqual("%s" % self.i3, '3')
+
     def test_add_int(self):
         result = self.i3._add_int(self.i2)
         self.assertEqual(result, PcInt(5))
@@ -24,6 +27,10 @@ class TestPcInt(unittest.TestCase):
         self.assertEqual(self.i3.add(self.f025), PcFloat(3.25))
 
 class TestPcFloat(unittest.TestCase):
+
+    def test_str(self):
+        f1 = PcFloat(1)
+        self.assertEqual("%s" % f1, '1.0')
 
     def test_add(self):
         a = PcFloat(0.125)

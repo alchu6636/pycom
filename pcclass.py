@@ -1,14 +1,12 @@
 
-def _int_add(a, b):
-    return int(a + b)
-
 def _float_add(a, b):
     return float(a + b)
 
 class Pc:
-    pass
+    def __eq__(self, other):
+        return self.value == other.value
 
-class PcInt:
+class PcInt(Pc):
     def __init__(self, v):
         self.value = int(v)
 
@@ -16,26 +14,27 @@ class PcInt:
         return v._add_int(self)
 
     def _add_int(self, int_o):
-        return PcInt(_int_add(self.value, int_o.value))
+        return self._prim_add(int_o)
+
+    def _prim_add(self, int_o):
+        if self.__class__.__name__ != 'PcInt':
+            raise TypeError('self is not PcInt')
+        if int_o.__class__.__name__ != 'PcInt':
+            raise TypeError('int_o is not PcInt')
+        return PcInt(self.value + int_o.value)
 
     def _add_float(self, float_o):
         return PcFloat(_float_add(self.value, float_o.value))
 
-    def __eq__(self, other):
-        return self.value == other.value
-
     def __str__(self):
-        return self.value
+        return str(self.value)
 
-class PcFloat:
+class PcFloat(Pc):
     def __init__(self, v):
         self.value = float(v)
 
-    def __eq__(self, other):
-        return self.value == other.value
-
     def __str__(self):
-        return self.value
+        return str(self.value)
 
     def add(self, v):
         return v._add_float(self)
